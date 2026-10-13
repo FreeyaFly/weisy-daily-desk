@@ -63,8 +63,13 @@ function Show-Dialog {
         $d = New-Object System.Windows.Forms.FolderBrowserDialog
         $d.Description = '选一个文件夹来保存数据（会在里面新建一个 Weisy-Data 文件夹）'
         $d.ShowNewFolderButton = $true
+        $d.RootFolder = [System.Environment+SpecialFolder]::MyComputer   # start at This PC: C:, D: ... are right there
         if ($d.ShowDialog($f) -eq 'OK') {
             $picked = $d.SelectedPath
+            if (($picked.TrimEnd('\') + '\').StartsWith($folder + '\', [System.StringComparison]::OrdinalIgnoreCase)) {
+                [void][System.Windows.Forms.MessageBox]::Show("不能把数据放在程序文件夹里面：更新或删除程序时数据会一起丢掉。`n请选程序文件夹之外的位置。", 'Weisy')
+                return
+            }
             $script:location = if (Test-Path -LiteralPath (Join-Path $picked 'weisy.json')) { $picked } else { Join-Path $picked 'Weisy-Data' }
             $loc.Text = $script:location
         }
