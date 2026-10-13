@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- tail -->
+  <path d="M138 158 C172 162 182 136 168 122 C160 114 150 122 158 130" fill="none" stroke="#3B4048" stroke-width="4" stroke-linecap="round"/>
+  <path d="M138 158 C172 162 182 136 168 122 C160 114 150 122 158 130" fill="none" stroke="#E8A4B0" stroke-width="2" stroke-linecap="round"/>
+  <!-- body -->
+  <ellipse cx="100" cy="146" rx="42" ry="38" fill="#BCC2CA" stroke="#3B4048" stroke-width="3.5"/>
+  <ellipse cx="100" cy="152" rx="24" ry="22" fill="#E4E7EB"/>
+  <!-- feet -->
+  <ellipse cx="80" cy="183" rx="13" ry="7" fill="#F2B8C3" stroke="#3B4048" stroke-width="3"/>
+  <ellipse cx="120" cy="183" rx="13" ry="7" fill="#F2B8C3" stroke="#3B4048" stroke-width="3"/>
+  <!-- left arm resting -->
+  <path d="M64 140 C56 152 60 164 70 166" fill="none" stroke="#3B4048" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="72" cy="165" r="6" fill="#F2B8C3" stroke="#3B4048" stroke-width="3"/>
+  <!-- right arm waving -->
+  <path d="M134 132 C148 122 152 104 150 92" fill="none" stroke="#3B4048" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="150" cy="86" r="8" fill="#F2B8C3" stroke="#3B4048" stroke-width="3"/>
+  <path d="M162 78 l6 -5 M164 88 l8 0 M160 70 l3 -7" stroke="#2A43C0" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- ears -->
+  <circle cx="64" cy="50" r="24" fill="#BCC2CA" stroke="#3B4048" stroke-width="3.5"/>
+  <circle cx="64" cy="50" r="14" fill="#F2B8C3"/>
+  <circle cx="136" cy="50" r="24" fill="#BCC2CA" stroke="#3B4048" stroke-width="3.5"/>
+  <circle cx="136" cy="50" r="14" fill="#F2B8C3"/>
+  <!-- head -->
+  <circle cx="100" cy="88" r="40" fill="#BCC2CA" stroke="#3B4048" stroke-width="3.5"/>
+  <!-- scarf -->
+  <path d="M68 116 C86 128 114 128 132 116 L134 124 C114 136 86 136 66 124 Z" fill="#2A43C0" stroke="#3B4048" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M116 128 L122 148 L110 146 Z" fill="#2A43C0" stroke="#3B4048" stroke-width="3" stroke-linejoin="round"/>
+  <!-- face -->
+  <ellipse cx="86" cy="84" rx="4.5" ry="6" fill="#2B2F36"/>
+  <ellipse cx="114" cy="84" rx="4.5" ry="6" fill="#2B2F36"/>
+  <circle cx="87.5" cy="81.5" r="1.6" fill="#fff"/>
+  <circle cx="115.5" cy="81.5" r="1.6" fill="#fff"/>
+  <ellipse cx="76" cy="98" rx="7" ry="4.5" fill="#F2B8C3" opacity=".8"/>
+  <ellipse cx="124" cy="98" rx="7" ry="4.5" fill="#F2B8C3" opacity=".8"/>
+  <ellipse cx="100" cy="96" rx="5.5" ry="4" fill="#E27C91"/>
+  <path d="M94 102 q3 4 6 0 q3 4 6 0" fill="none" stroke="#3B4048" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M64 94 l-16 -3 M64 100 l-16 3 M136 94 l16 -3 M136 100 l16 3" stroke="#3B4048" stroke-width="1.8" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,3 @@
+# the Windows launcher needs CRLF, the macOS one needs LF - whatever the checkout settings
+*.bat text eol=crlf
+*.command text eol=lf

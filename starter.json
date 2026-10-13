@@ -1,0 +1,275 @@
+{
+ "format": 1,
+ "collections": {
+  "areas": {
+   "main": {
+    "name": "主线",
+    "color": "#2F6BB3",
+    "tier": "main",
+    "order": 1,
+    "desc": "决定去向"
+   },
+   "side": {
+    "name": "支线",
+    "color": "#2E8157",
+    "tier": "growth",
+    "order": 2,
+    "desc": "拓宽渠道"
+   },
+   "long": {
+    "name": "长期",
+    "color": "#C27716",
+    "tier": "habit",
+    "order": 3,
+    "desc": "持续积累"
+   }
+  },
+  "tasks": {
+   "ex-read": {
+    "title": "示例：读完一本书",
+    "areaId": "long",
+    "status": "todo",
+    "priority": 3,
+    "due": "",
+    "next": "每天读 20 页",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "",
+    "order": 1024,
+    "milestones": [
+     {
+      "id": "em1",
+      "title": "读到一半",
+      "due": "",
+      "done": false
+     },
+     {
+      "id": "em2",
+      "title": "写读书笔记",
+      "due": "",
+      "done": false
+     }
+    ]
+   },
+   "ex-room": {
+    "title": "示例：整理房间",
+    "areaId": "side",
+    "status": "todo",
+    "priority": 2,
+    "due": "",
+    "next": "先收拾书桌",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "",
+    "order": 2048,
+    "milestones": []
+   },
+   "ex-cook": {
+    "title": "示例：学做一道新菜",
+    "areaId": "side",
+    "status": "todo",
+    "priority": 2,
+    "due": "",
+    "next": "挑一道想学的菜",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "",
+    "order": 3072,
+    "milestones": []
+   },
+   "ex-trip": {
+    "title": "示例：准备一次旅行",
+    "areaId": "main",
+    "status": "doing",
+    "priority": 1,
+    "due": "",
+    "next": "定好出发日期",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "",
+    "order": 4096,
+    "milestones": [
+     {
+      "id": "em1",
+      "title": "订机票",
+      "due": "",
+      "done": false
+     },
+     {
+      "id": "em2",
+      "title": "订住宿",
+      "due": "",
+      "done": false
+     },
+     {
+      "id": "em3",
+      "title": "列行李清单",
+      "due": "",
+      "done": false
+     }
+    ]
+   }
+  },
+  "daily": {
+   "__today__": {
+    "date": "__today__",
+    "items": [
+     {
+      "id": "ex1",
+      "text": "示例：读 20 页书",
+      "done": false,
+      "doneAt": "",
+      "areaId": "long",
+      "taskId": "ex-read"
+     },
+     {
+      "id": "ex2",
+      "text": "示例：回复一封重要邮件",
+      "done": false,
+      "doneAt": "",
+      "areaId": "",
+      "taskId": ""
+     },
+     {
+      "id": "ex3",
+      "text": "示例：去超市买菜",
+      "done": false,
+      "doneAt": "",
+      "areaId": "side",
+      "taskId": "ex-cook"
+     },
+     {
+      "id": "ex4",
+      "text": "示例：散步 30 分钟",
+      "done": false,
+      "doneAt": "",
+      "areaId": "",
+      "taskId": ""
+     }
+    ]
+   }
+  },
+  "gigPaths": {
+   "ex-design": {
+    "name": "示例：接设计单",
+    "platformLabel": "平台",
+    "projectLabel": "项目",
+    "note": "",
+    "order": 1,
+    "createdAt": ""
+   },
+   "ex-translate": {
+    "name": "示例：做翻译",
+    "platformLabel": "平台",
+    "projectLabel": "项目",
+    "note": "",
+    "order": 2,
+    "createdAt": ""
+   },
+   "ex-resell": {
+    "name": "示例：二手闲置转卖",
+    "platformLabel": "平台",
+    "projectLabel": "项目",
+    "note": "",
+    "order": 3,
+    "createdAt": ""
+   }
+  },
+  "gigs": {
+   "ex-design-p": {
+    "kind": "platform",
+    "pathId": "ex-design",
+    "parentId": "",
+    "name": "示例：朋友介绍",
+    "status": "research",
+    "link": "",
+    "pay": "",
+    "earned": "",
+    "currency": "EUR",
+    "startedAt": "",
+    "endedAt": "",
+    "notes": "",
+    "order": 1,
+    "createdAt": ""
+   },
+   "ex-translate-p": {
+    "kind": "platform",
+    "pathId": "ex-translate",
+    "parentId": "",
+    "name": "示例：自由职业平台",
+    "status": "research",
+    "link": "",
+    "pay": "",
+    "earned": "",
+    "currency": "EUR",
+    "startedAt": "",
+    "endedAt": "",
+    "notes": "",
+    "order": 2,
+    "createdAt": ""
+   },
+   "ex-resell-p": {
+    "kind": "platform",
+    "pathId": "ex-resell",
+    "parentId": "",
+    "name": "示例：二手交易平台",
+    "status": "research",
+    "link": "",
+    "pay": "",
+    "earned": "",
+    "currency": "EUR",
+    "startedAt": "",
+    "endedAt": "",
+    "notes": "",
+    "order": 3,
+    "createdAt": ""
+   }
+  },
+  "habits": {
+   "ex-sport": {
+    "name": "示例：运动",
+    "color": "#2B8A3E",
+    "order": 1,
+    "useTags": true,
+    "tags": [
+     "跑步",
+     "瑜伽",
+     "拉伸"
+    ],
+    "mins": true,
+    "longNote": false,
+    "didLabel": "备注",
+    "archived": false,
+    "createdAt": ""
+   },
+   "ex-reading": {
+    "name": "示例：阅读",
+    "color": "#E8590C",
+    "order": 2,
+    "useTags": false,
+    "tags": [],
+    "mins": true,
+    "longNote": false,
+    "didLabel": "读了什么",
+    "archived": false,
+    "createdAt": ""
+   },
+   "ex-sleep": {
+    "name": "示例：早睡",
+    "color": "#7048E8",
+    "order": 3,
+    "useTags": false,
+    "tags": [],
+    "mins": false,
+    "longNote": false,
+    "didLabel": "备注",
+    "archived": false,
+    "createdAt": ""
+   }
+  }
+ }
+}

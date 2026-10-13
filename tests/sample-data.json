@@ -1,0 +1,454 @@
+{
+ "format": 1,
+ "collections": {
+  "areas": {
+   "main": {
+    "name": "主线",
+    "color": "#2F6BB3",
+    "tier": "main",
+    "order": 1,
+    "desc": "决定去向"
+   },
+   "side": {
+    "name": "支线",
+    "color": "#2E8157",
+    "tier": "growth",
+    "order": 2,
+    "desc": "拓宽渠道"
+   },
+   "long": {
+    "name": "长期",
+    "color": "#C27716",
+    "tier": "habit",
+    "order": 3,
+    "desc": "持续积累"
+   }
+  },
+  "tasks": {
+   "c01": {
+    "title": "准备驾照科目一考试",
+    "areaId": "main",
+    "status": "doing",
+    "priority": 1,
+    "due": "",
+    "next": "每天刷 50 道题",
+    "notes": "· 先把交通标志过一遍\n· 周末做两套模拟卷",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "2026-09-20",
+    "order": 1024
+   },
+   "c02": {
+    "title": "申请周末陶艺课程",
+    "areaId": "main",
+    "status": "doing",
+    "priority": 1,
+    "due": "2026-10-20",
+    "next": "整理报名材料",
+    "notes": "社区艺术中心的周末班，名额有限。\n\n日程（10/20 截止）\n· 10/10 确认课程时间\n· 10/15 提交报名表",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "2026-09-20",
+    "order": 2048,
+    "milestones": [
+     {
+      "id": "m1",
+      "title": "确认课程时间",
+      "due": "2026-10-08",
+      "done": true
+     },
+     {
+      "id": "m2",
+      "title": "填写报名表",
+      "due": "2026-10-12",
+      "done": false
+     },
+     {
+      "id": "m3",
+      "title": "准备作品照片",
+      "due": "2026-10-14",
+      "done": false
+     },
+     {
+      "id": "m4",
+      "title": "缴纳学费",
+      "due": "2026-10-18",
+      "done": false
+     },
+     {
+      "id": "m5",
+      "title": "第一节课",
+      "due": "2026-10-25",
+      "done": false
+     }
+    ],
+    "log": [
+     {
+      "id": "l1",
+      "date": "2026-09-22",
+      "tag": "",
+      "text": "和朋友打听了老师的风格"
+     }
+    ]
+   },
+   "c03": {
+    "title": "学会做家常菜",
+    "areaId": "side",
+    "status": "doing",
+    "priority": 2,
+    "due": "",
+    "next": "买齐基础调料",
+    "notes": "从最简单的开始，每周学一道。",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "2026-09-20",
+    "order": 1024,
+    "milestones": [
+     {
+      "id": "m1",
+      "title": "番茄炒蛋",
+      "due": "",
+      "done": false
+     },
+     {
+      "id": "m2",
+      "title": "青椒肉丝",
+      "due": "",
+      "done": false
+     },
+     {
+      "id": "m3",
+      "title": "红烧肉",
+      "due": "",
+      "done": false
+     },
+     {
+      "id": "m4",
+      "title": "清蒸鱼",
+      "due": "",
+      "done": false
+     },
+     {
+      "id": "m5",
+      "title": "麻婆豆腐",
+      "due": "",
+      "done": false
+     },
+     {
+      "id": "m6",
+      "title": "请朋友吃饭",
+      "due": "",
+      "done": false
+     }
+    ],
+    "log": [
+     {
+      "id": "l1",
+      "date": "2026-09-21",
+      "tag": "",
+      "text": "买了一口新锅"
+     },
+     {
+      "id": "l2",
+      "date": "2026-09-23",
+      "tag": "",
+      "text": "番茄炒蛋第一次失败"
+     }
+    ]
+   },
+   "c04": {
+    "title": "整理旧照片做成相册",
+    "areaId": "side",
+    "status": "todo",
+    "priority": 2,
+    "due": "",
+    "next": "把手机里的照片导到电脑",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "2026-09-20",
+    "order": 2048
+   },
+   "c05": {
+    "title": "准备钢琴考级",
+    "areaId": "side",
+    "status": "todo",
+    "priority": 2,
+    "due": "",
+    "next": "每天练琴 30 分钟",
+    "notes": "· 考级曲目三首\n· 下个月约一次老师",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "2026-09-20",
+    "order": 3072
+   },
+   "c06": {
+    "title": "试试接设计单",
+    "areaId": "side",
+    "status": "todo",
+    "priority": 2,
+    "due": "",
+    "next": "看看有哪些接单平台",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "2026-09-20",
+    "order": 4096,
+    "tracker": "gigs"
+   },
+   "c07": {
+    "title": "学吉他",
+    "areaId": "long",
+    "status": "todo",
+    "priority": 3,
+    "due": "",
+    "next": "先学会 C 和 G 两个和弦",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "2026-09-20",
+    "order": 1024
+   },
+   "c08": {
+    "title": "每月读两本书",
+    "areaId": "long",
+    "status": "todo",
+    "priority": 3,
+    "due": "",
+    "next": "列一份书单",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "2026-09-20",
+    "order": 2048
+   },
+   "c09": {
+    "title": "学一门外语",
+    "areaId": "long",
+    "status": "todo",
+    "priority": 3,
+    "due": "",
+    "next": "每天背 10 个单词",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "2026-09-20",
+    "order": 3072
+   },
+   "c10": {
+    "title": "参加社区志愿活动",
+    "areaId": "long",
+    "status": "todo",
+    "priority": 3,
+    "due": "",
+    "next": "报名下个月的活动",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "2026-09-20",
+    "order": 4096
+   },
+   "c11": {
+    "title": "整理家里的储物间",
+    "areaId": "long",
+    "status": "doing",
+    "priority": 3,
+    "due": "",
+    "next": "先清理最上面一层",
+    "notes": "不着急，每周末整理一小时。",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "2026-09-20",
+    "order": 5120,
+    "milestones": [
+     {
+      "id": "m1",
+      "title": "清空最上层",
+      "due": "",
+      "done": true
+     },
+     {
+      "id": "m2",
+      "title": "扔掉不用的东西",
+      "due": "",
+      "done": true
+     },
+     {
+      "id": "m3",
+      "title": "买收纳盒",
+      "due": "",
+      "done": true
+     },
+     {
+      "id": "m4",
+      "title": "分类贴标签",
+      "due": "2026-10-24",
+      "done": false
+     },
+     {
+      "id": "m5",
+      "title": "整理第二层",
+      "due": "",
+      "done": false
+     },
+     {
+      "id": "m6",
+      "title": "全部完成",
+      "due": "",
+      "done": false
+     }
+    ],
+    "log": [
+     {
+      "id": "l1",
+      "date": "2026-09-11",
+      "tag": "",
+      "text": "拍了整理前的照片"
+     },
+     {
+      "id": "l2",
+      "date": "2026-09-12",
+      "tag": "",
+      "text": "清空了最上层"
+     },
+     {
+      "id": "l3",
+      "date": "2026-09-13",
+      "tag": "",
+      "text": "捐了一箱旧衣服"
+     },
+     {
+      "id": "l4",
+      "date": "2026-09-14",
+      "tag": "",
+      "text": "买了六个收纳盒"
+     },
+     {
+      "id": "l5",
+      "date": "2026-09-15",
+      "tag": "",
+      "text": "给箱子写了标签"
+     },
+     {
+      "id": "l6",
+      "date": "2026-09-16",
+      "tag": "",
+      "text": "发现了小时候的玩具"
+     }
+    ]
+   },
+   "c12": {
+    "title": "规划年底旅行",
+    "areaId": "main",
+    "status": "todo",
+    "priority": 1,
+    "due": "",
+    "next": "查一查机票价格",
+    "notes": "",
+    "doneAt": "",
+    "prevStatus": "",
+    "createdAt": "2026-09-20",
+    "order": 3072
+   }
+  },
+  "habits": {
+   "h-fitness": {
+    "name": "运动",
+    "color": "#2B8A3E",
+    "order": 1,
+    "useTags": true,
+    "tags": [
+     "跑步",
+     "瑜伽",
+     "拉伸",
+     "跳绳"
+    ],
+    "mins": true,
+    "longNote": false,
+    "didLabel": "备注",
+    "archived": false,
+    "createdAt": "2026-09-20"
+   },
+   "h-lang": {
+    "name": "外语",
+    "color": "#3B5BDB",
+    "order": 2,
+    "useTags": false,
+    "tags": [],
+    "mins": true,
+    "longNote": false,
+    "didLabel": "做了什么",
+    "archived": false,
+    "createdAt": "2026-09-20"
+   },
+   "h-study": {
+    "name": "学习",
+    "color": "#7048E8",
+    "order": 3,
+    "useTags": false,
+    "tags": [],
+    "mins": false,
+    "longNote": true,
+    "didLabel": "学了什么",
+    "archived": false,
+    "createdAt": "2026-09-20"
+   },
+   "h-read": {
+    "name": "阅读",
+    "color": "#E8590C",
+    "order": 4,
+    "useTags": false,
+    "tags": [],
+    "mins": true,
+    "longNote": false,
+    "didLabel": "读了什么",
+    "archived": false,
+    "createdAt": "2026-09-20"
+   }
+  },
+  "gigPaths": {
+   "design": {
+    "name": "接设计单",
+    "platformLabel": "平台",
+    "projectLabel": "项目",
+    "note": "",
+    "order": 1,
+    "createdAt": "2026-09-20"
+   }
+  },
+  "gigs": {
+   "g-01": {
+    "kind": "platform",
+    "pathId": "design",
+    "parentId": "",
+    "name": "设计接单平台 A",
+    "status": "research",
+    "link": "",
+    "pay": "",
+    "earned": "",
+    "currency": "EUR",
+    "startedAt": "",
+    "endedAt": "",
+    "notes": "",
+    "order": 1,
+    "createdAt": "2026-09-20"
+   },
+   "g-02": {
+    "kind": "platform",
+    "pathId": "design",
+    "parentId": "",
+    "name": "朋友介绍",
+    "status": "applied",
+    "link": "",
+    "pay": "",
+    "earned": "",
+    "currency": "EUR",
+    "startedAt": "",
+    "endedAt": "",
+    "notes": "",
+    "order": 2,
+    "createdAt": "2026-09-20"
+   }
+  }
+ }
+}
