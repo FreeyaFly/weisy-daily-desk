@@ -105,7 +105,7 @@
     ok('回到今天 returns to today', q('.dv-nav h2').textContent.includes('今日清单') && !!rowByText('家常菜 练习 W2'));
 
     // ---- saved ----
-    await wait(200);
+    await until(() => { const w = window.__writes['daily/' + today]; return !!w && w.items.length === rows().length; });
     const saved = window.__writes['daily/' + today];
     ok('the day is saved as one document', !!saved && saved.items.length === rows().length, saved ? saved.items.length + ' items' : 'none');
     ok('saved items carry branch and big task', saved && saved.items.some(i => i.text === '家常菜 练习 W2' && i.taskId === 'c03' && i.areaId === 'side'));
@@ -156,6 +156,7 @@
     await moveVia('昨天没做完A', today);
     ok('the moved row leaves the old day at once', !rowByText('昨天没做完A') && !!rowByText('昨天做完了'));
     await moveVia('三天前的老任务', today);
+    await until(() => { const w = window.__writes['daily/' + yday]; return !!w && w.items.map(i => i.text).join('|') === '昨天做完了'; });
     const yw = window.__writes['daily/' + yday];
     ok('old day is saved without the moved rows', !!yw && yw.items.map(i => i.text).join('|') === '昨天做完了', yw && yw.items.map(i => i.text).join('|'));
     const tw = window.__writes['daily/' + today].items;

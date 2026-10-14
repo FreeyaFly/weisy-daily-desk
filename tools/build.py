@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / 'src'
 APP = ROOT / 'app'
 ICON_SIZES = (16, 20, 24, 30, 32, 40, 48)  # 20/30/40 = 16/24/32 at 125 % display scaling
-ICON_VERSION = 1  # bump when the icon images change, so the browser drops its cached copy
+ICON_VERSION = 2  # bump when the icon images change, so the browser drops its cached copy
 VERSION = (ROOT / 'VERSION').read_text(encoding='utf-8').strip()
 APP_ICONS = (16, 20, 24, 30, 32, 40, 48, 64, 96, 128, 192, 256, 512)  # listed in the app manifest
 
