@@ -34,9 +34,15 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
-ROOT = Path(__file__).resolve().parent
-APP = ROOT / 'app'
-STARTER = ROOT / 'starter.json'
+if getattr(sys, 'frozen', False):
+    # the packaged Windows version (Weisy-daily-desk.exe, see tools/package.py): the program folder is where the .exe is,
+    # the page and starter.json travel inside the package
+    ROOT = Path(sys.executable).resolve().parent
+    BUNDLE = Path(getattr(sys, '_MEIPASS', ROOT))
+else:
+    ROOT = BUNDLE = Path(__file__).resolve().parent
+APP = BUNDLE / 'app'
+STARTER = BUNDLE / 'starter.json'
 DEFAULT_PORT = 8780
 NAME_RE = re.compile(r'^[A-Za-z0-9_\-]{1,64}$')                  # collection names
 ID_RE = re.compile(r'^(?!\.\.?$)[A-Za-z0-9_\-.~:@+]{1,200}$')    # same rule as the page
@@ -317,6 +323,45 @@ class Handler(BaseHTTPRequestHandler):
         self._doc_request('DELETE')
 
 
+class PortInUse(Exception):
+    pass
+
+
+def say(*args, **kwargs):
+    """print(), but a missing or closed console (windowless start, packaged version) must never stop the server."""
+    try:
+        print(*args, **kwargs)
+    except (OSError, ValueError, AttributeError):
+        pass
+
+
+def resolve_data_dir(data=None):
+    """The data folder from --data or the default rules; DataLocationError if it cannot be used."""
+    data_dir = Path(data) if data else default_data_dir()
+    if data_dir.exists() and not os.access(data_dir, os.W_OK):
+        raise DataLocationError(f'Weisy cannot write to its data folder:\n    {data_dir}')
+    return data_dir
+
+
+def serve(port, store, keep_alive=False, idle_timeout=IDLE_TIMEOUT, bye_grace=BYE_GRACE, start_grace=START_GRACE, on_ready=None):
+    """Serve until the last window is gone (forever with keep_alive). on_ready() runs once the port is open."""
+    Handler.store = store
+    Handler.presence = None if keep_alive else Presence(idle_timeout, bye_grace, start_grace)
+    Handler.port = port
+    try:
+        server = ThreadingHTTPServer(('127.0.0.1', port), Handler)
+    except OSError as e:
+        raise PortInUse(port) from e
+    say(f'Weisy is running: http://127.0.0.1:{port}/   data: {store.file}')
+    if Handler.presence:
+        say('It stops by itself a few seconds after the last Weisy window is closed (--keep-alive to prevent that).')
+        threading.Thread(target=watch, args=(server, Handler.presence), daemon=True).start()
+    if on_ready:
+        on_ready()
+    server.serve_forever()
+    server.server_close()
+
+
 def main():
     ap = argparse.ArgumentParser(description='Weisy local server')
     ap.add_argument('--port', type=int, default=DEFAULT_PORT)
@@ -328,33 +373,24 @@ def main():
         ap.add_argument(f'--{name}', type=float, default=default, help=argparse.SUPPRESS)  # shortened by the tests
     args = ap.parse_args()
     Handler.test_mode = args.test
+    data_dir = args.data
     try:
-        data_dir = Path(args.data) if args.data else default_data_dir()
-        if data_dir.exists() and not os.access(data_dir, os.W_OK):
-            raise DataLocationError(f'Weisy cannot write to its data folder:\n    {data_dir}')
+        data_dir = resolve_data_dir(args.data)
         if args.check:
-            print(f'Data folder: {data_dir}')
+            say(f'Data folder: {data_dir}')
             return
-        Handler.store = Store(data_dir)
+        store = Store(data_dir)
     except DataLocationError as e:
-        print(e, file=sys.stderr)
+        say(e, file=sys.stderr)
         sys.exit(2)
     except OSError as e:
-        print(f'Weisy cannot use its data folder {data_dir}:\n    {e}', file=sys.stderr)
+        say(f'Weisy cannot use its data folder {data_dir}:\n    {e}', file=sys.stderr)
         sys.exit(2)
-    Handler.presence = None if args.keep_alive else Presence(args.idle_timeout, args.bye_grace, args.start_grace)
-    Handler.port = args.port
     try:
-        server = ThreadingHTTPServer(('127.0.0.1', args.port), Handler)
-    except OSError:
-        print(f'Port {args.port} is in use: Weisy may already be running.', file=sys.stderr)
+        serve(args.port, store, args.keep_alive, args.idle_timeout, args.bye_grace, args.start_grace)
+    except PortInUse:
+        say(f'Port {args.port} is in use: Weisy may already be running.', file=sys.stderr)
         sys.exit(1)
-    print(f'Weisy is running: http://127.0.0.1:{args.port}/   data: {Handler.store.file}')
-    if Handler.presence:
-        print('It stops by itself a few seconds after the last Weisy window is closed (--keep-alive to prevent that).')
-        threading.Thread(target=watch, args=(server, Handler.presence), daemon=True).start()
-    server.serve_forever()
-    server.server_close()
 
 
 if __name__ == '__main__':

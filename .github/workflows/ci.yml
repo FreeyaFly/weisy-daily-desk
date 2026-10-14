@@ -1,0 +1,19 @@
+# CI (continuous integration): every push and pull request runs the full test suite on a clean Windows
+# machine at GitHub - the server, the data rules and the page itself in a headless Edge.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run the tests (server, data rules, page in headless Edge)
+        run: python tests/test_local.py

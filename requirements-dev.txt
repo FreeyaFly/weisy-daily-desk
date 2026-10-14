@@ -1,0 +1,6 @@
+# Developer tools only. Weisy itself needs nothing beyond Python's standard library,
+# and the packaged Windows version needs no Python at all.
+#   python -m venv .venv
+#   .venv\Scripts\python -m pip install --no-cache-dir -r requirements-dev.txt
+pyinstaller==6.11.1   # tools/package.py: the Windows package (Weisy-daily-desk.exe)
+pillow==12.3.0        # tools/make_demo_gif.py, tools/make_icons.py

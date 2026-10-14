@@ -5,7 +5,7 @@
 潦草鼠鼠之家（英文名 Weisy）是一个完全运行在你自己电脑上的个人工作台：今日清单、任务看板、带自动进展日志的里程碑、副业记录和习惯打卡，还有一只小老鼠陪着你。
 不需要注册账号，没有云端，也不收集任何数据：你的所有内容就是硬盘上的一个 JSON 文件。
 
-![今日](docs/screenshot-today-zh.png)
+![勾掉一项，小老鼠庆祝](docs/demo.gif)
 
 ## 有哪些功能
 
@@ -17,24 +17,50 @@
 | 副业 | 记录你的副业、用到的平台和每一项的收入。 |
 | 习惯 | 一键打卡，带一整年的热力图，可以记录选项、时长和笔记。 |
 
+![今日](docs/screenshot-today-zh.png)
 ![看板](docs/screenshot-board-zh.png)
 ![任务](docs/screenshot-tasks-zh.png)
 ![副业](docs/screenshot-gigs-zh.png)
 ![习惯](docs/screenshot-habits-zh.png)
 
-## 快速开始
+## 快速开始（Windows，不用装任何东西）
 
-### Windows
-
-1. 安装 [Python 3](https://www.python.org/downloads/)（安装时勾选 “Add python.exe to PATH”）。
-2. 下载这个仓库（Code → Download ZIP），解压到你喜欢的位置。
-3. 双击 **`start.bat`**，潦草鼠鼠之家会在独立窗口中打开。
+1. 打开 [Releases 页面](https://github.com/FreeyaFly/weisy-daily-desk/releases/latest)，下载 **`Weisy-v…-windows.zip`**。
+2. 解压到你喜欢的位置。
+3. 双击里面的 **`Weisy-daily-desk.exe`**，潦草鼠鼠之家会在独立窗口中打开。
 
 第一次打开时，会弹出一个小窗口，让你做两个选择（**选好之后就不会再问，请慎重考虑**）：
 - **数据保存在哪里。** 不确定就用默认位置；想放在 D 盘，点「更改…」选一个文件夹（不要选程序文件夹里面）。
 - **要不要在桌面放一个图标。**
 
 还没想好？点小窗口右上角的 × 就行：软件会直接退出，什么都不会创建，下次打开再问。
+
+### 第一次打开时可能看到的两个提示
+
+- **「Windows 已保护你的电脑」**：这是因为潦草鼠鼠之家是个人开源项目，没有购买数字签名证书，Windows 不认识它的发布者，并不是发现了问题。点「更多信息」→「仍要运行」即可，同一个文件以后不会再提示。
+- **杀毒软件报"可疑"**：个别杀毒软件会把用 PyInstaller 打包的程序误判为可疑，这是常见的误报。每个下载包都由 GitHub 直接从这里公开的源代码自动打包、测试并发布，你可以在仓库的 Actions 页面看到全过程。如果仍不放心，可以用下面「用 Python 运行」的方式，直接运行源代码。
+
+### 怎么关
+
+直接关掉潦草鼠鼠之家的窗口就行。几秒钟后程序会自己退出，后台不会留下任何东西。
+
+### 怎么更新（保留旧数据）
+
+1. 关掉软件。
+2. **先记下数据文件夹在哪**：用记事本打开程序文件夹里的 `.weisy\location.txt`，里面那一行就是路径。如果没有这个文件，说明你用的是默认位置。
+3. 删掉旧的程序文件夹（放心，你的数据不在里面）。
+4. 下载新版本，解压，双击 `Weisy-daily-desk.exe`。
+5. 在弹出的小窗口里：用的是默认位置就直接点「开始」；否则点「更改…」，选回原来的数据文件夹。
+
+旧数据会自动接上，你会看到新版本、老数据。每个版本改了什么，见 [更新记录](CHANGELOG.md)。
+
+## 用 Python 运行（macOS、Linux，或想直接运行源代码）
+
+### Windows
+
+1. 安装 [Python 3](https://www.python.org/downloads/)（安装时勾选 “Add python.exe to PATH”）。
+2. 下载这个仓库（Code → Download ZIP），解压。
+3. 双击 **`start.bat`**。第一次同样会弹出上面那个小窗口。
 
 ### macOS
 
@@ -49,23 +75,9 @@
 运行 `sh start.command`；或者先运行一次 `python3 tools/build.py`，然后运行 `python3 server.py`，再打开 <http://127.0.0.1:8780/>。
 
 macOS / Linux 没有那个小窗口：数据放在默认位置（`~/.weisy-data/`）。想放别处，用 `python3 server.py --data 文件夹路径` 启动。
-
-### 怎么关
-
-直接关掉潦草鼠鼠之家的窗口（或浏览器标签页）就行。几秒钟后程序会自己退出，后台不会留下任何东西。
-如果想让它一直开着，用 `python3 server.py --keep-alive` 启动。
+想让程序一直开着（关窗口也不退出），用 `python3 server.py --keep-alive` 启动。
 
 可选：在 Edge 或 Chrome 里选择「将此站点作为应用安装」，任务栏上就会有自己的图标。再次打开时，会直接切换到已经打开的窗口。
-
-### 怎么更新（保留旧数据）
-
-1. 关掉软件。
-2. **先记下数据文件夹在哪**：用记事本打开程序文件夹里的 `.weisy\location.txt`，里面那一行就是路径。如果没有这个文件，说明你用的是默认位置。
-3. 删掉旧的程序文件夹（放心，你的数据不在里面）。
-4. 下载新版本，解压，双击 `start.bat`。
-5. 在弹出的小窗口里：用的是默认位置就直接点「开始」；否则点「更改…」，选回原来的数据文件夹。
-
-旧数据会自动接上，你会看到新版本、老数据。
 
 ## 你的数据
 
@@ -83,7 +95,7 @@ macOS / Linux 没有那个小窗口：数据放在默认位置（`~/.weisy-data/
 
 ## 开发者
 
-文件结构、构建和测试方法见 [English README](README.en.md#for-developers)。
+文件结构、构建、打包、测试和发布方法见 [English README](README.en.md#for-developers)。
 
 ## 许可证
 

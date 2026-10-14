@@ -4,7 +4,8 @@
     python tools/build.py --test   -> also app/test.html (the page + tests/test.js)
 
 src/workbench.html is the source. The build inlines the two local scripts it loads
-(vendor/Sortable and local-store.js), adds the icon links and the web-app manifest.
+(vendor/Sortable and local-store.js), adds the icon links and the web-app manifest, and fills in the
+version number from the VERSION file (the only place it is kept).
 """
 import json
 import shutil
@@ -16,6 +17,7 @@ SRC = ROOT / 'src'
 APP = ROOT / 'app'
 ICON_SIZES = (16, 20, 24, 30, 32, 40, 48)  # 20/30/40 = 16/24/32 at 125 % display scaling
 ICON_VERSION = 1  # bump when the icon images change, so the browser drops its cached copy
+VERSION = (ROOT / 'VERSION').read_text(encoding='utf-8').strip()
 APP_ICONS = (16, 20, 24, 30, 32, 40, 48, 64, 96, 128, 192, 256, 512)  # listed in the app manifest
 
 
@@ -25,7 +27,7 @@ def rep(s, old, new):
 
 
 def build(test=False):
-    page = (SRC / 'workbench.html').read_text(encoding='utf-8')
+    page = rep((SRC / 'workbench.html').read_text(encoding='utf-8'), '__WEISY_VERSION__', VERSION)
     vendor = (SRC / 'vendor' / 'Sortable-1.15.2.min.js').read_text(encoding='utf-8')
     store = (SRC / 'local-store.js').read_text(encoding='utf-8')
     page = rep(page, '<script src="vendor/Sortable-1.15.2.min.js"></script>\n<script src="local-store.js"></script>',

@@ -1,0 +1,35 @@
+# Changelog / 更新记录
+
+Each version: 中文 first, then English. The release workflow copies the section of the version being released
+into the GitHub release notes, so keep the heading format `## v<version> (<date>)`.
+
+## v0.2.0 (2026-10-14)
+
+**中文**
+- 新增 **Windows 免安装版**：下载 `Weisy-v0.2.0-windows.zip`，解压，双击 `Weisy-daily-desk.exe` 即可使用，不需要安装 Python。
+- 新增 README 动图：勾掉一项，小老鼠庆祝。
+- 版本号统一：页面左上角、导出的备份和下载文件名都显示同一个版本号。
+- 发布方式：每个版本由 GitHub Actions 从公开的源代码自动打包、测试并发布，同时附带这份更新记录。
+- 改进：页面里"程序已停止"等提示会说明用 `Weisy-daily-desk.exe` 还是 `start.bat` 重新打开。
+
+**English**
+- New **Windows package, no Python needed**: download `Weisy-v0.2.0-windows.zip`, unzip it and double-click `Weisy-daily-desk.exe`.
+- New README animation: tick an item off and the mouse cheers.
+- One version number everywhere: the page header, exported backups and the download name.
+- Releases: every version is packaged, tested and published by GitHub Actions straight from the public source code,
+  with these notes attached.
+- The page's "program stopped" hints now mention `Weisy-daily-desk.exe` as well as `start.bat`.
+
+## v0.1.0 (2026-10-14)
+
+**中文**
+- 第一个公开版本：今日清单、看板、任务（里程碑和自动进展日志）、副业和习惯打卡，完全在自己电脑上运行。
+- 第一次打开时选择数据保存位置和是否创建桌面图标；关窗口后程序几秒内自动退出。
+- 程序自己的记录只放在程序文件夹的 `.weisy` 里，不会在别处留下文件。
+
+**English**
+- First public version: today list, board, tasks (milestones and an automatic progress log), side projects and habits,
+  running entirely on your own computer.
+- The first start asks where to keep the data and whether to add a desktop icon; closing the window stops the program
+  within seconds.
+- Weisy's own notes stay in `.weisy` inside the program folder; nothing is left anywhere else.

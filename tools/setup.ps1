@@ -1,4 +1,4 @@
-﻿# Weisy first-run setup, called by start.bat before the server starts (env WEISY_DIR = program folder).
+﻿# Weisy first-run setup, called by start.bat or Weisy-daily-desk.exe (launcher.py) before the server starts (env WEISY_DIR = program folder).
 # One small dialog, asked ONCE per program folder: where to keep the data (default: the Weisy-Data folder in %APPDATA%,
 # only created if the user keeps it) and whether to put a shortcut on the desktop. Weisy's own small notes live in
 # .weisy inside the program folder, so deleting the program folder leaves nothing behind: location.txt (the chosen
@@ -13,6 +13,11 @@ Add-Type -Name Dpi -Namespace Weisy -MemberDefinition '[System.Runtime.InteropSe
 
 $folder = ([string]$env:WEISY_DIR).TrimEnd('\')
 if (-not $folder) { $folder = (Split-Path -Parent $PSScriptRoot) }
+# the icons travel with this script (repository: ../src/assets; packaged version: the same layout inside the package)
+$assets = Join-Path (Split-Path -Parent $PSScriptRoot) 'src\assets'
+# what the desktop shortcut opens: Weisy-daily-desk.exe in the packaged version (WEISY_TARGET), start.bat otherwise
+$target = if ($env:WEISY_TARGET) { $env:WEISY_TARGET } else { Join-Path $folder 'start.bat' }
+$launcherName = Split-Path -Leaf $target   # Weisy-daily-desk.exe or start.bat, named in the dialog
 $base = Join-Path $env:APPDATA 'Weisy-Data'          # the default data folder (created by the server only if it is used)
 $notes = Join-Path $folder '.weisy'                  # Weisy's own small notes stay inside the program folder
 $mark = Join-Path $notes 'desktop-shortcut.txt'
@@ -33,8 +38,8 @@ function Show-Dialog {
     $f.ClientSize = New-Object System.Drawing.Size(480, 356)
     $f.StartPosition = 'CenterScreen'; $f.FormBorderStyle = 'FixedDialog'; $f.MaximizeBox = $false; $f.MinimizeBox = $false
     $f.BackColor = C '#F3F4F1'; $f.TopMost = $true; $f.Font = New-Object System.Drawing.Font($font, 9.5)
-    $ico = Join-Path $folder 'src\assets\icon.ico'
-    $png = Join-Path $folder 'src\assets\icon-64.png'
+    $ico = Join-Path $assets 'icon.ico'
+    $png = Join-Path $assets 'icon-64.png'
     if (Test-Path $ico) { $f.Icon = New-Object System.Drawing.Icon($ico) }
     if (Test-Path $png) {
         $pb = New-Object System.Windows.Forms.PictureBox
@@ -47,7 +52,7 @@ function Show-Dialog {
     $t.Font = New-Object System.Drawing.Font($font, 14, [System.Drawing.FontStyle]::Bold); $t.ForeColor = C '#171B19'
     $t.Location = New-Object System.Drawing.Point(96, 28); $t.Size = New-Object System.Drawing.Size(360, 30)
     $b = New-Object System.Windows.Forms.Label
-    $b.Text = "选好数据保存的位置，再决定要不要桌面图标。`n不要图标也行，随时双击 start.bat 打开。"
+    $b.Text = "选好数据保存的位置，再决定要不要桌面图标。`n不要图标也行，随时双击 $launcherName 打开。"
     $b.ForeColor = C '#434B47'
     $b.Location = New-Object System.Drawing.Point(96, 62); $b.Size = New-Object System.Drawing.Size(360, 44)
     $lh = New-Object System.Windows.Forms.Label
@@ -127,10 +132,10 @@ if ($answer -ne 'Yes') { Write-Text $mark 'no'; exit 0 }
 try {
     $name = [string]::Join('', [char[]](0x6F66, 0x8349, 0x9F20, 0x9F20, 0x4E4B, 0x5BB6))
     $lnk = (New-Object -ComObject WScript.Shell).CreateShortcut((Join-Path ([Environment]::GetFolderPath('Desktop')) ($name + '.lnk')))
-    $lnk.TargetPath = Join-Path $folder 'start.bat'
+    $lnk.TargetPath = $target
     $lnk.WorkingDirectory = $folder
-    $lnk.IconLocation = (Join-Path $folder 'src\assets\icon.ico')
-    $lnk.WindowStyle = 7   # minimised: the launcher window is only a flash
+    if ($env:WEISY_TARGET) { $lnk.IconLocation = "$target,0" }   # the .exe carries the paw icon itself
+    else { $lnk.IconLocation = (Join-Path $assets 'icon.ico'); $lnk.WindowStyle = 7 }   # start.bat: minimised, the console is only a flash
     $lnk.Save()
     Write-Text $mark 'yes'
 } catch { exit 1 }

@@ -277,7 +277,8 @@ def main():
     for f in (ROOT / 'app' / 'test.html',):
         if f.exists():
             f.unlink()
+    return fails
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(1 if main() else 0)  # a failing check fails the run (CI relies on this)
