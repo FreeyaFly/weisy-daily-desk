@@ -18,6 +18,8 @@
 | 习惯 | 一键打卡，带一整年的热力图，可以记录选项、时长和笔记。 |
 
 ![看板](docs/screenshot-board-zh.png)
+![任务](docs/screenshot-tasks-zh.png)
+![副业](docs/screenshot-gigs-zh.png)
 ![习惯](docs/screenshot-habits-zh.png)
 
 ## 快速开始

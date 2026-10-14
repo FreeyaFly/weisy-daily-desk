@@ -21,6 +21,8 @@ keeping you company. No account, no cloud, no tracking: your data is one JSON fi
 | 习惯 Habits | One-tap check-ins with a year heatmap, optional tags, minutes and notes. |
 
 ![Board](docs/screenshot-board-zh.png)
+![Tasks](docs/screenshot-tasks-zh.png)
+![Side projects](docs/screenshot-gigs-zh.png)
 ![Habits](docs/screenshot-habits-zh.png)
 
 ## Quick start
