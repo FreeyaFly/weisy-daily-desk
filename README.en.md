@@ -28,10 +28,13 @@ keeping you company. No account, no cloud, no tracking: your data is one JSON fi
 ### Windows
 
 1. Install [Python 3](https://www.python.org/downloads/) (tick "Add python.exe to PATH" during setup).
-2. Download this repository (Code → Download ZIP) and unzip it anywhere.
-3. Double-click **`start.bat`**. Weisy opens in its own window at <http://127.0.0.1:8780/>.
-   The first time, a small dialog asks where to keep your data and whether to put a shortcut on your desktop.
-   It is asked only once, so decide carefully (see *Your data* below for changing the folder later).
+2. Download this repository (Code → Download ZIP) and unzip it wherever you like.
+3. Double-click **`start.bat`**. Weisy opens in its own window.
+
+The first time, a small dialog asks you two things (**asked only once, so decide carefully**):
+- **Where to keep your data.** If unsure, keep the default; to use your D: drive, click *更改…* (Change…) and pick a
+  folder (not one inside the program folder).
+- **Whether to put an icon on your desktop.**
 
 ### macOS
 
@@ -45,6 +48,9 @@ keeping you company. No account, no cloud, no tracking: your data is one JSON fi
 
 Run `sh start.command`, or `python3 tools/build.py` once, then `python3 server.py` and open <http://127.0.0.1:8780/>.
 
+macOS / Linux have no dialog: the data goes to the default place (`~/.weisy-data/`). To use another folder, start
+with `python3 server.py --data <folder>`.
+
 ### Closing
 
 Just close the Weisy window (or browser tab). A few seconds later the program stops by itself — there is nothing
@@ -53,28 +59,38 @@ running in the background. To keep it running anyway, start `python3 server.py -
 Optional: in Edge or Chrome choose *Install this site as an app* to get a taskbar icon.
 Opening Weisy again brings the existing window to the front.
 
-### Updating
+### Updating (keeping your data)
 
-Download the new ZIP, unzip it anywhere and start it. Your data does not live in the program folder (see below),
-so there is nothing to copy. You can delete the old folder.
+1. Close Weisy.
+2. **Note where your data is:** open `.weisy\location.txt` in the program folder with Notepad — the line in it is the
+   path. If there is no such file, you are using the default place.
+3. Delete the old program folder (your data is not inside it).
+4. Download the new version, unzip it and double-click `start.bat`.
+5. In the small dialog: if you used the default place, just click the start button; otherwise click *更改…* and pick
+   your old data folder again.
+
+Your old data is picked up automatically: new version, old data.
 
 ## Your data
 
-- Everything is saved in `weisy.json` as you type, in a folder **outside** the program folder:
-  `%APPDATA%\Weisy-Data\` on Windows, `~/.weisy-data/` on macOS and Linux. On Windows you can pick another folder in
-  the first-run dialog (Weisy creates a `Weisy-Data` folder inside the one you pick).
-  The first run creates it with three task types and a few examples (titled 「示例：…」, i.e. "Example: …") —
-  delete them whenever you like.
-- **Changing the folder later:** close Weisy, move the data folder where you want it, then put the new path (one
-  line) into `location.txt` in the default folder above — or start the server with `python3 server.py --data <folder>`.
-  On macOS / Linux there is no dialog; use one of these two ways.
-- If the chosen folder cannot be found (for example an unplugged drive), Weisy refuses to start and says why —
-  it never quietly creates an empty set of data. Reconnect the drive, or delete `location.txt` to go back to the default.
-- (If a `data/weisy.json` already exists next to `server.py` from an earlier version, that one keeps being used.)
-- Before the first change of each day a copy goes to the `backups` folder next to it (the last 30 days are kept).
+- Everything is saved in `weisy.json` as you type, in a folder **outside** the program folder. Default place:
+  `C:\Users\<you>\AppData\Roaming\Weisy-Data\` on Windows, `~/.weisy-data/` on macOS and Linux.
+  If you chose another place in the first-run dialog, the data is in a `Weisy-Data` folder inside the one you picked,
+  and the default place is never created.
+- The first run puts in three task types and a few examples (titled 「示例：…」, i.e. "Example: …") — delete them
+  whenever you like.
+- Weisy's own two small notes (the data place you chose, and that you were asked) live in `.weisy` inside the program
+  folder, so nothing is scattered around your computer.
+- **Changing the folder later:** close Weisy, move the data folder to its new place, then edit the path in
+  `.weisy\location.txt` with Notepad.
+- **If the data folder cannot be found** (for example an unplugged drive), Weisy says so and refuses to start — it never
+  quietly creates an empty set of data. Reconnect the drive and start again; to give up that place and start fresh,
+  delete `.weisy\location.txt`.
+- Before the first change of each day a copy goes to the `backups` folder inside the data folder (the last 30 days are kept).
 - The page also has **导出备份** (export) and **导入备份** (import) for a JSON backup.
 - The server only listens on `127.0.0.1` and refuses requests from other websites.
-- To remove Weisy completely, delete the program folder, the desktop shortcut and the data folder above.
+- To remove Weisy completely, delete the program folder, the desktop icon and the data folder — that is everything.
+- (Developers: a `data/weisy.json` next to `server.py` is used first if it exists.)
 
 ## For developers
 

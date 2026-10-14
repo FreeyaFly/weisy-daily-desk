@@ -47,17 +47,12 @@ if not errorlevel 1 (
 )
 exit /b 0
 
-rem First-run setup (data folder and desktop shortcut): tools\setup.ps1 asks once, in a small dialog, BEFORE the server
-rem starts so that a chosen data folder is used from the start. PowerShell is slow to start, so it is only called
-rem when the answer is still missing or the program folder has moved (see setup.ps1).
+rem First-run setup (data folder and desktop shortcut): tools\setup.ps1 asks once per program folder, in a small
+rem dialog, BEFORE the server starts so that a chosen data folder is used from the start. Its notes live in the .weisy
+rem folder next to this file. PowerShell is slow to start, so it is only called while that answer is still missing.
 :setup
 if "%WEISY_NO_WINDOW%"=="1" exit /b 0
+if exist "%~dp0.weisy\desktop-shortcut.txt" exit /b 0
 set "WEISY_DIR=%~dp0"
-set "HERE=%~dp0"
-set "HERE=%HERE:~0,-1%"
-set "ANS="
-if exist "%APPDATA%\Weisy-Data\desktop-shortcut.txt" set /p ANS=<"%APPDATA%\Weisy-Data\desktop-shortcut.txt"
-if /i "%ANS%"=="no" exit /b 0
-if /i "%ANS%"=="%HERE%" exit /b 0
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\setup.ps1" >nul 2>&1
 exit /b 0

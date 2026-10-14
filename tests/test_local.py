@@ -121,16 +121,17 @@ def presence_tests():
     with __import__('tempfile').TemporaryDirectory() as td:
         root, home = Path(td) / 'app', Path(td) / 'home'
         root.mkdir()
-        env = {'APPDATA': str(home)}
+        e = {'APPDATA': str(home)} if os.name == 'nt' else {}
         base = home / 'Weisy-Data' if os.name == 'nt' else home / '.weisy-data'
-        e = env if os.name == 'nt' else {}
-        check('data folder: the Weisy-Data folder in AppData (home folder elsewhere)', server.default_data_dir(root, e, home) == base)
+        check('data folder: the Weisy-Data folder in AppData (home folder elsewhere), and nothing is created there yet',
+              server.default_data_dir(root, e, home) == base and not base.exists())
         check('data folder: home folder when there is no AppData', server.default_data_dir(root, {}, home) == home / '.weisy-data')
-        base.mkdir(parents=True)
+        notes = root / '.weisy'
+        notes.mkdir()
         chosen = Path(td) / 'elsewhere' / 'Weisy-Data'
         chosen.mkdir(parents=True)
-        (base / 'location.txt').write_text(str(chosen), encoding='utf-8-sig')  # a BOM must not matter
-        check('data folder: a folder chosen on the first run (location.txt) is used', server.default_data_dir(root, e, home) == chosen)
+        (notes / 'location.txt').write_text(str(chosen), encoding='utf-8-sig')  # a BOM must not matter
+        check('data folder: a folder chosen on the first run (.weisy/location.txt) is used', server.default_data_dir(root, e, home) == chosen)
         chosen.rmdir()
         try:
             server.default_data_dir(root, e, home)
@@ -138,16 +139,17 @@ def presence_tests():
         except server.DataLocationError as err:
             check('data folder: a chosen folder that has gone missing is refused, not silently replaced',
                   str(chosen) in str(err) and 'location.txt' in str(err))
-        (base / 'location.txt').write_text('  \n', encoding='utf-8')
+        # the real program says so too (this is what start.bat shows when it could not start): run a copy in a
+        # throw-away program folder so the real one is not touched
+        shutil.copy2(ROOT / 'server.py', root / 'server.py')
+        r = subprocess.run([sys.executable, str(root / 'server.py'), '--check'], capture_output=True, text=True,
+                           env={**os.environ, 'APPDATA': str(home), 'HOME': str(home), 'USERPROFILE': str(home)})
+        check('server.py --check refuses a missing data folder with a clear message', r.returncode == 2 and str(chosen) in r.stderr, r.stderr.strip()[:60])
+        (notes / 'location.txt').write_text('  \n', encoding='utf-8')
         check('data folder: an empty location.txt is ignored', server.default_data_dir(root, e, home) == base)
         (root / 'data').mkdir(); (root / 'data' / 'weisy.json').write_text('{}')
         check('data folder: an existing data/weisy.json next to the program is still used', server.default_data_dir(root, e, home) == root / 'data')
-        # the real program says so too (this is what start.bat shows when it could not start)
-        (root / 'data' / 'weisy.json').unlink(); (root / 'data').rmdir()
-        (base / 'location.txt').write_text(str(chosen), encoding='utf-8')
-        r = subprocess.run([sys.executable, str(ROOT / 'server.py'), '--check'], capture_output=True, text=True,
-                           env={**os.environ, 'APPDATA': str(home), 'HOME': str(home), 'USERPROFILE': str(home)})
-        check('server.py --check refuses a missing data folder with a clear message', r.returncode == 2 and str(chosen) in r.stderr, r.stderr.strip()[:60])
+        check('Weisy leaves nothing in the user folders on its own (checking only: no Weisy-Data was created)', not base.exists())
     # a browser's idle spare connection must not block everyone else (it once froze the window on a white page)
     import socket
     p = start(TMP / 'threads')

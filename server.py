@@ -1,13 +1,16 @@
 """Weisy · local server
 
 Runs only on this computer (127.0.0.1): serves the page and keeps all data in weisy.json.
-The data lives outside the program folder, so an update is just "unzip the new version, start it":
-    Windows        the Weisy-Data folder inside %APPDATA%
-    macOS / Linux  ~/.weisy-data/
-That folder also holds location.txt: one line with another folder, if the user chose a different place for the
-data (start.bat offers that on the first run). If that folder cannot be found the server refuses to start
-instead of quietly creating an empty set of data. A data/ folder next to server.py that already holds a
-weisy.json is still used.
+The data lives outside the program folder, so an update is: delete the old program folder, unzip the new one,
+start it and pick the same data folder again. Where the data goes:
+    1. .weisy/location.txt next to server.py: one line with the folder the user chose in the first-run dialog
+       (start.bat offers that). If that folder cannot be found the server refuses to start instead of
+       quietly creating an empty set of data.
+    2. otherwise the default: the Weisy-Data folder inside %APPDATA% (Windows) or ~/.weisy-data/ (macOS / Linux).
+       It is only created when the user keeps the default - nothing is left there otherwise.
+(A data/ folder next to server.py that already holds a weisy.json is still used first.)
+Weisy's own small notes (location.txt, the shortcut answer) live in .weisy/ inside the program folder, so
+deleting the program folder leaves nothing behind but the data.
 Before the first change of each day it copies the data file to backups/ (the last 30 days are kept).
 On the very first run the data file is created from starter.json (three task types and a few examples).
 
@@ -48,8 +51,8 @@ class DataLocationError(Exception):
     pass
 
 
-def settings_dir(env=os.environ, home=None):
-    """The fixed place for Weisy's own small files (location.txt, the shortcut answer); also the default data folder."""
+def standard_data_dir(env=os.environ, home=None):
+    """The default data folder (used when the user did not choose another one)."""
     if os.name == 'nt' and env.get('APPDATA'):
         return Path(env['APPDATA']) / 'Weisy-Data'
     return (home or Path.home()) / '.weisy-data'
@@ -60,8 +63,8 @@ def default_data_dir(root=ROOT, env=os.environ, home=None):
     local = root / 'data'
     if (local / 'weisy.json').exists():
         return local
-    base = settings_dir(env, home)
-    pointer = base / 'location.txt'
+    base = standard_data_dir(env, home)
+    pointer = root / '.weisy' / 'location.txt'
     if pointer.is_file():
         text = pointer.read_text(encoding='utf-8-sig').strip()
         if text:
@@ -70,9 +73,9 @@ def default_data_dir(root=ROOT, env=os.environ, home=None):
                 raise DataLocationError('\n'.join([
                     'Weisy cannot find its data folder:',
                     f'    {target}',
-                    f'It was chosen when Weisy was first started (see {pointer}).',
+                    f'It was chosen when Weisy was first started (written in {pointer}).',
                     'If the folder is on a drive or network location that is not connected, connect it and start Weisy again.',
-                    f'If you moved or deleted it, put it back, or delete {pointer.name} to use the default folder ({base}).']))
+                    f'If you moved or deleted it, put it back, or delete {pointer.name} to start fresh in the default folder ({base}).']))
             return target
     return base
 

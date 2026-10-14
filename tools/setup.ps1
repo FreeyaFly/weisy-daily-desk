@@ -1,8 +1,9 @@
 ﻿# Weisy first-run setup, called by start.bat before the server starts (env WEISY_DIR = program folder).
-# One small dialog, asked ONCE: where to keep the data (default: the Weisy-Data folder in %APPDATA%) and whether to put a
-# shortcut on the desktop. The shortcut answer is kept in desktop-shortcut.txt: "no" is final, a folder path means "yes,
-# for that folder" - after an update into a new folder the shortcut is quietly pointed there. A changed data folder
-# is kept in location.txt (read by server.py). -Preview <png> only saves a picture of the dialog.
+# One small dialog, asked ONCE per program folder: where to keep the data (default: the Weisy-Data folder in %APPDATA%,
+# only created if the user keeps it) and whether to put a shortcut on the desktop. Weisy's own small notes live in
+# .weisy inside the program folder, so deleting the program folder leaves nothing behind: location.txt (the chosen
+# data folder, read by server.py) and desktop-shortcut.txt (the fact that we asked). -Preview <png> only saves a
+# picture of the dialog.
 param([string]$Preview = '')
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Windows.Forms, System.Drawing
@@ -12,9 +13,10 @@ Add-Type -Name Dpi -Namespace Weisy -MemberDefinition '[System.Runtime.InteropSe
 
 $folder = ([string]$env:WEISY_DIR).TrimEnd('\')
 if (-not $folder) { $folder = (Split-Path -Parent $PSScriptRoot) }
-$base = Join-Path $env:APPDATA 'Weisy-Data'          # fixed place for the small files; also the default data folder
-$mark = Join-Path $base 'desktop-shortcut.txt'
-$pointer = Join-Path $base 'location.txt'
+$base = Join-Path $env:APPDATA 'Weisy-Data'          # the default data folder (created by the server only if it is used)
+$notes = Join-Path $folder '.weisy'                  # Weisy's own small notes stay inside the program folder
+$mark = Join-Path $notes 'desktop-shortcut.txt'
+$pointer = Join-Path $notes 'location.txt'
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 
 function C([string]$hex) { [System.Drawing.ColorTranslator]::FromHtml($hex) }
@@ -28,7 +30,7 @@ function Show-Dialog {
     $font = 'Microsoft YaHei UI'
     $f = New-Object System.Windows.Forms.Form
     $f.Text = [string]::Join('', [char[]](0x6F66, 0x8349, 0x9F20, 0x9F20, 0x4E4B, 0x5BB6))   # the app name
-    $f.ClientSize = New-Object System.Drawing.Size(480, 330)
+    $f.ClientSize = New-Object System.Drawing.Size(480, 356)
     $f.StartPosition = 'CenterScreen'; $f.FormBorderStyle = 'FixedDialog'; $f.MaximizeBox = $false; $f.MinimizeBox = $false
     $f.BackColor = C '#F3F4F1'; $f.TopMost = $true; $f.Font = New-Object System.Drawing.Font($font, 9.5)
     $ico = Join-Path $folder 'src\assets\icon.ico'
@@ -74,23 +76,27 @@ function Show-Dialog {
             $loc.Text = $script:location
         }
     })
+    $hint = New-Object System.Windows.Forms.Label
+    $hint.Text = '以前用过？点“更改…”，选回原来的数据文件夹就行。'
+    $hint.ForeColor = C '#747C78'; $hint.Font = New-Object System.Drawing.Font($font, 8.5)
+    $hint.Location = New-Object System.Drawing.Point(28, 178); $hint.Size = New-Object System.Drawing.Size(424, 22)
     $w = New-Object System.Windows.Forms.Label
     $w.Text = "  ⚠  数据位置和桌面图标只会询问这一次，以后不会再次询问，请慎重考虑。"
     $w.BackColor = C '#F6ECD8'; $w.ForeColor = C '#9E6410'
     $w.Font = New-Object System.Drawing.Font($font, 9.5, [System.Drawing.FontStyle]::Bold); $w.TextAlign = 'MiddleLeft'
-    $w.Location = New-Object System.Drawing.Point(28, 190); $w.Size = New-Object System.Drawing.Size(424, 56)
+    $w.Location = New-Object System.Drawing.Point(28, 214); $w.Size = New-Object System.Drawing.Size(424, 56)
     $yes = New-Object System.Windows.Forms.Button
     $yes.Text = '创建桌面图标并开始'; $yes.FlatStyle = 'Flat'; $yes.FlatAppearance.BorderSize = 0
     $yes.BackColor = C '#2A43C0'; $yes.ForeColor = [System.Drawing.Color]::White; $yes.Cursor = 'Hand'
-    $yes.Location = New-Object System.Drawing.Point(104, 268); $yes.Size = New-Object System.Drawing.Size(176, 42)
+    $yes.Location = New-Object System.Drawing.Point(104, 294); $yes.Size = New-Object System.Drawing.Size(176, 42)
     $yes.DialogResult = 'Yes'
     $no = New-Object System.Windows.Forms.Button
     $no.Text = '不要图标，开始'; $no.FlatStyle = 'Flat'; $no.FlatAppearance.BorderColor = C '#C5CAC4'
     $no.BackColor = [System.Drawing.Color]::White; $no.ForeColor = C '#171B19'; $no.Cursor = 'Hand'
-    $no.Location = New-Object System.Drawing.Point(290, 268); $no.Size = New-Object System.Drawing.Size(162, 42)
+    $no.Location = New-Object System.Drawing.Point(290, 294); $no.Size = New-Object System.Drawing.Size(162, 42)
     $no.DialogResult = 'No'
     $f.CancelButton = $no   # Esc or the window's close button count as "no icon"
-    $f.Controls.AddRange(@($t, $b, $lh, $loc, $chg, $w, $yes, $no))
+    $f.Controls.AddRange(@($t, $b, $lh, $loc, $chg, $hint, $w, $yes, $no))
     if ($Preview) {
         $f.Show(); $f.Refresh()
         $bmp = New-Object System.Drawing.Bitmap($f.Width, $f.Height)
@@ -102,22 +108,19 @@ function Show-Dialog {
 }
 
 if ($Preview) { [void](Show-Dialog); exit 0 }
-$ans = Read-Text $mark
-if ($ans -eq 'no' -or $ans -eq $folder) { exit 0 }
-if (-not $ans) {
-    $answer = Show-Dialog
-    # keep the chosen data folder (the default needs no pointer)
-    if ($script:location -ne $base) {
-        try {
-            New-Item -ItemType Directory -Force -Path $script:location | Out-Null
-            Write-Text $pointer $script:location
-        } catch {
-            [void][System.Windows.Forms.MessageBox]::Show("这个位置用不了，数据会保存在默认位置：`n$base", 'Weisy')
-            if (Test-Path -LiteralPath $pointer) { Remove-Item -LiteralPath $pointer -Force }
-        }
-    } elseif (Test-Path -LiteralPath $pointer) { Remove-Item -LiteralPath $pointer -Force }
-    if ($answer -ne 'Yes') { Write-Text $mark 'no'; exit 0 }
-}
+if (Test-Path -LiteralPath $mark) { exit 0 }         # already asked for this program folder
+$answer = Show-Dialog
+# keep the chosen data folder (the default needs no pointer)
+if ($script:location -ne $base) {
+    try {
+        New-Item -ItemType Directory -Force -Path $script:location | Out-Null
+        Write-Text $pointer $script:location
+    } catch {
+        [void][System.Windows.Forms.MessageBox]::Show("这个位置用不了，数据会保存在默认位置：`n$base", 'Weisy')
+        if (Test-Path -LiteralPath $pointer) { Remove-Item -LiteralPath $pointer -Force }
+    }
+} elseif (Test-Path -LiteralPath $pointer) { Remove-Item -LiteralPath $pointer -Force }
+if ($answer -ne 'Yes') { Write-Text $mark 'no'; exit 0 }
 try {
     $name = [string]::Join('', [char[]](0x6F66, 0x8349, 0x9F20, 0x9F20, 0x4E4B, 0x5BB6))
     $lnk = (New-Object -ComObject WScript.Shell).CreateShortcut((Join-Path ([Environment]::GetFolderPath('Desktop')) ($name + '.lnk')))
@@ -126,5 +129,5 @@ try {
     $lnk.IconLocation = (Join-Path $folder 'src\assets\icon.ico')
     $lnk.WindowStyle = 7   # minimised: the launcher window is only a flash
     $lnk.Save()
-    Write-Text $mark $folder
+    Write-Text $mark 'yes'
 } catch { exit 1 }
