@@ -14,6 +14,7 @@ if errorlevel 1 (
   exit /b 1
 )
 call :setup
+if errorlevel 3 exit /b 0
 python "%~dp0server.py" --check >nul 2>&1
 if errorlevel 1 (
   echo Weisy cannot start:
@@ -55,4 +56,6 @@ if "%WEISY_NO_WINDOW%"=="1" exit /b 0
 if exist "%~dp0.weisy\desktop-shortcut.txt" exit /b 0
 set "WEISY_DIR=%~dp0"
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\setup.ps1" >nul 2>&1
+rem 3 = the dialog was closed without a choice: stop here, nothing is started or created
+if errorlevel 3 exit /b 3
 exit /b 0

@@ -33,10 +33,12 @@ keeping you company. No account, no cloud, no tracking: your data is one JSON fi
 2. Download this repository (Code → Download ZIP) and unzip it wherever you like.
 3. Double-click **`start.bat`**. Weisy opens in its own window.
 
-The first time, a small dialog asks you two things (**asked only once, so decide carefully**):
+The first time, a small dialog asks you two things (**once you choose, you will not be asked again, so decide carefully**):
 - **Where to keep your data.** If unsure, keep the default; to use your D: drive, click *更改…* (Change…) and pick a
   folder (not one inside the program folder).
 - **Whether to put an icon on your desktop.**
+
+Not sure yet? Just close the small window (×): Weisy quits without creating anything and asks again next time.
 
 ### macOS
 

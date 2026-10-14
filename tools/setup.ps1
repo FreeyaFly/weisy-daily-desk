@@ -3,7 +3,7 @@
 # only created if the user keeps it) and whether to put a shortcut on the desktop. Weisy's own small notes live in
 # .weisy inside the program folder, so deleting the program folder leaves nothing behind: location.txt (the chosen
 # data folder, read by server.py) and desktop-shortcut.txt (the fact that we asked). -Preview <png> only saves a
-# picture of the dialog.
+# picture of the dialog. Closing the dialog (X or Esc) exits with code 3: start.bat then stops without starting anything.
 param([string]$Preview = '')
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Windows.Forms, System.Drawing
@@ -95,7 +95,9 @@ function Show-Dialog {
     $no.BackColor = [System.Drawing.Color]::White; $no.ForeColor = C '#171B19'; $no.Cursor = 'Hand'
     $no.Location = New-Object System.Drawing.Point(290, 294); $no.Size = New-Object System.Drawing.Size(162, 42)
     $no.DialogResult = 'No'
-    $f.CancelButton = $no   # Esc or the window's close button count as "no icon"
+    # Esc or the window's close button: nothing is decided, so Weisy does not start and creates nothing (asked again next time)
+    $f.KeyPreview = $true
+    $f.Add_KeyDown({ if ($_.KeyCode -eq 'Escape') { $f.DialogResult = 'Cancel'; $f.Close() } })
     $f.Controls.AddRange(@($t, $b, $lh, $loc, $chg, $hint, $w, $yes, $no))
     if ($Preview) {
         $f.Show(); $f.Refresh()
@@ -110,6 +112,7 @@ function Show-Dialog {
 if ($Preview) { [void](Show-Dialog); exit 0 }
 if (Test-Path -LiteralPath $mark) { exit 0 }         # already asked for this program folder
 $answer = Show-Dialog
+if ($answer -ne 'Yes' -and $answer -ne 'No') { exit 3 }   # closed without choosing: start.bat stops, nothing written
 # keep the chosen data folder (the default needs no pointer)
 if ($script:location -ne $base) {
     try {
