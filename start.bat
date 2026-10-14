@@ -14,11 +14,11 @@ if errorlevel 1 (
   exit /b 1
 )
 call :setup
-python "%~dp0server.py" --check >"%TEMP%\weisy-check.txt" 2>&1
+python "%~dp0server.py" --check >nul 2>&1
 if errorlevel 1 (
   echo Weisy cannot start:
   echo.
-  type "%TEMP%\weisy-check.txt"
+  python "%~dp0server.py" --check
   echo.
   pause
   exit /b 1
