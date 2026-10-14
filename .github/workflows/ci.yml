@@ -10,9 +10,11 @@ on:
 jobs:
   test:
     runs-on: windows-latest
+    env:
+      PYTHONUTF8: '1'   # print Chinese text safely (the runner's default console encoding is cp1252)
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
       - name: Run the tests (server, data rules, page in headless Edge)

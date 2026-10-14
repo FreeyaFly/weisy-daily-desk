@@ -197,6 +197,9 @@ def presence_tests():
 
 
 def main():
+    # the report has Chinese words; a console or CI log with another default encoding (cp1252 on GitHub's Windows
+    # machines) must not crash the run after every check has passed
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     subprocess.run([sys.executable, str(ROOT / 'tools' / 'build.py'), '--test'], check=True, stdout=subprocess.DEVNULL)
     seeded = seed()
     srv = start()

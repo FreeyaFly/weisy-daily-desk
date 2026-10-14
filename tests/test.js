@@ -3,6 +3,8 @@
   const out = [];
   const ok = (name, cond, extra) => out.push(`${cond ? 'PASS' : 'FAIL'}  ${name}${extra !== undefined ? '  — ' + extra : ''}`);
   const wait = ms => new Promise(r => setTimeout(r, ms));
+  // wait until a condition holds (a save reaches the server at its own pace), at most ms; a fixed wait made one check flaky
+  const until = async (cond, ms = 3000) => { const end = Date.now() + ms; while (!cond() && Date.now() < end) await wait(20); return cond(); };
   const $$ = s => [...document.querySelectorAll(s)];
   const q = s => document.querySelector(s);
   const key = (k, o = {}, t = document.body) => t.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true, ...o }));
@@ -324,8 +326,10 @@
     const areaSel = q('#tf-area');
     ok('the task window says 类型, ordered 主线/支线/长期/其它', areaSel.closest('label').firstChild.textContent.trim() === '类型' && [...areaSel.options].map(o => o.textContent).join('/') === '主线/支线/长期/其它', [...areaSel.options].map(o => o.textContent).join('/'));
     ok('a new task starts as 其它', areaSel.value === '');
-    q('#tf-title').value = '其它测试任务'; q('form[data-form="task"]').requestSubmit(); await wait(100);
-    const newT = Object.values(window.__writes).find(v => v && v.title === '其它测试任务');
+    q('#tf-title').value = '其它测试任务'; q('form[data-form="task"]').requestSubmit();
+    const savedOther = () => Object.values(window.__writes).find(v => v && v.title === '其它测试任务');
+    await until(() => savedOther() && q('#modal').hidden);
+    const newT = savedOther();
     ok('it saves without choosing a type', !!newT && newT.areaId === '' && q('#modal').hidden);
     q('[data-view="projects"]').click(); await wait(40);
     const noneH = $$('.area-h').find(h => h.textContent.includes('其它'));
