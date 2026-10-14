@@ -28,9 +28,12 @@ keeping you company. No account, no cloud, no tracking: your data is one JSON fi
 
 ## Quick start (Windows, nothing to install)
 
-1. Open the [Releases page](https://github.com/FreeyaFly/weisy-daily-desk/releases/latest) and download **`Weisy-v…-windows.zip`**.
-2. Unzip it wherever you like.
-3. Double-click **`Weisy-daily-desk.exe`** inside. Weisy opens in its own window.
+1. Open the [download page of the latest version](https://github.com/FreeyaFly/weisy-daily-desk/releases/latest) — or, on this
+   repository's front page, click the newest version under **Releases** on the right.
+2. Under **Assets** at the bottom of that page, click **`Weisy-v…-windows.zip`** (`…` is the version number). The two
+   "Source code" files next to it are the source code; you do not need them.
+3. Right-click the downloaded file → *Extract All…*, and extract it wherever you like.
+4. Open the extracted folder and double-click **`Weisy-daily-desk.exe`**. Weisy opens in its own window.
 
 The first time, a small dialog asks you two things (**once you choose, you will not be asked again, so decide carefully**):
 - **Where to keep your data.** If unsure, keep the default; to use your D: drive, click *更改…* (Change…) and pick a
@@ -51,15 +54,18 @@ Not sure yet? Just close the small window (×): Weisy quits without creating any
 
 ### Closing
 
-Just close the Weisy window. A few seconds later the program stops by itself — there is nothing running in the background.
+Just close the Weisy window. About 10 seconds later the program stops by itself — there is nothing running in the background.
+
+If you are about to delete or move the program folder, wait about 10 seconds after closing the window: until the program
+has stopped, Windows says the files are in use and will not delete them.
 
 ### Updating (keeping your data)
 
 1. Close Weisy.
 2. **Note where your data is:** open `.weisy\location.txt` in the program folder with Notepad — the line in it is the
    path. If there is no such file, you are using the default place.
-3. Delete the old program folder (your data is not inside it).
-4. Download the new version, unzip it and double-click `Weisy-daily-desk.exe`.
+3. About 10 seconds after closing the window, delete the old program folder (your data is not inside it).
+4. Download and extract the new version (steps 1–4 of *Quick start* above) and double-click `Weisy-daily-desk.exe`.
 5. In the small dialog: if you used the default place, just click the start button; otherwise click *更改…* and pick
    your old data folder again.
 
@@ -110,7 +116,8 @@ Opening Weisy again brings the existing window to the front.
 - Before the first change of each day a copy goes to the `backups` folder inside the data folder (the last 30 days are kept).
 - The page also has **导出备份** (export) and **导入备份** (import) for a JSON backup.
 - The server only listens on `127.0.0.1` and refuses requests from other websites.
-- To remove Weisy completely, delete the program folder, the desktop icon and the data folder — that is everything.
+- To remove Weisy completely, close it, wait about 10 seconds, then delete the program folder, the desktop icon and the
+  data folder — that is everything.
 - (Developers: a `data/weisy.json` next to `server.py` is used first if it exists.)
 
 ## For developers
